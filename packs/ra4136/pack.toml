@@ -1,0 +1,49 @@
+# RA 4136 (Land Transportation and Traffic Code) - first rule pack.
+# Grounding scenarios: plan v3 section 7 families A-D. Predicates marked
+# required_tier enforce the evidentiary floor (v2 section 3.3.4): e.g. the
+# emergency-vehicle exception may NOT fire on ASSERTED (self-serving) claims.
+
+[meta]
+statute = "RA 4136"
+version = "1.0.0"
+source_section = "sec. 35 (speed) / sec. 39 (sirens, flashing lights)"
+
+# ---- predicates ------------------------------------------------------------
+
+[predicate.recorded_speed]
+kind = "fact"
+required_tier = "DOCUMENTED"
+
+[predicate.posted_limit]
+kind = "fact"
+required_tier = "DOCUMENTED"
+
+[predicate.speed_exceeds_limit]
+kind = "derived"
+expr = "recorded_speed > posted_limit"
+required_tier = "DOCUMENTED"
+
+[predicate.is_national_road]
+kind = "fact"
+required_tier = "DOCUMENTED"
+
+[predicate.is_authorized_emergency_vehicle]
+kind = "fact"
+required_tier = "DOCUMENTED"   # ASSERTED-tier claims can never satisfy this
+
+[predicate.is_emergency_response]
+kind = "fact"
+required_tier = "DOCUMENTED"   # dispatch/radio logs, not the driver's say-so
+
+# ---- rules -----------------------------------------------------------------
+
+[rule.SPEEDING_VIOLATION]
+description = "Exceeding the posted speed limit on a national road (RA 4136 sec. 35)."
+all_of = ["speed_exceeds_limit", "is_national_road"]
+consequence = "LIABILITY_ESTABLISHED"
+
+[rule.SPEEDING_VIOLATION.exceptions.emergency_response]
+description = "Authorized emergency vehicle on an emergency response (override precedence)."
+all_of = ["is_authorized_emergency_vehicle", "is_emergency_response"]
+precedence = 1
+consequence = "IMMUNITY"

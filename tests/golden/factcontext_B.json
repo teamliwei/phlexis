@@ -1,0 +1,70 @@
+{
+ "case_id": "golden-B-ambulance",
+ "dossier_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+ "probe": {
+  "schema_constrained": false
+ },
+ "injection_flags": [],
+ "facts": {
+  "recorded_speed": {
+   "value": true,
+   "quote": "Recorded speed: 90 km/h",
+   "quote_status": "VERIFIED",
+   "tier": "DOCUMENTED",
+   "span": [
+    0,
+    24
+   ],
+   "rationale": ""
+  },
+  "posted_limit": {
+   "value": true,
+   "quote": "posted limit: 60 km/h",
+   "quote_status": "VERIFIED",
+   "tier": "DOCUMENTED",
+   "span": [
+    25,
+    46
+   ],
+   "rationale": ""
+  },
+  "is_national_road": {
+   "value": true,
+   "quote": "Narciso Rd., Quezon City (national road)",
+   "quote_status": "VERIFIED",
+   "tier": "DOCUMENTED",
+   "span": [
+    47,
+    86
+   ],
+   "rationale": ""
+  },
+  "is_authorized_emergency_vehicle": {
+   "value": true,
+   "quote": "marked ambulance LTO plate SMD-118, beacons and siren operating",
+   "quote_status": "VERIFIED",
+   "tier": "DOCUMENTED",
+   "span": [
+    87,
+    140
+   ],
+   "rationale": ""
+  },
+  "is_emergency_response": {
+   "value": true,
+   "quote": "hospital dispatch log confirms transport of critical patient",
+   "quote_status": "VERIFIED",
+   "tier": "DOCUMENTED",
+   "span": [
+    141,
+    195
+   ],
+   "rationale": ""
+  }
+ },
+ "numbers": {
+  "recorded_speed": 90.0,
+  "posted_limit": 60.0
+ },
+ "events": []
+}

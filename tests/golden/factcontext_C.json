@@ -1,0 +1,18 @@
+{
+  "case_id": "golden-C-selfdeclared-responder",
+  "dossier_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "probe": {"schema_constrained": false},
+  "injection_flags": [],
+  "facts": {
+    "recorded_speed": {"value": true, "quote": "Recorded speed: 90 km/h", "quote_status": "VERIFIED", "tier": "DOCUMENTED", "span": [0, 24], "rationale": ""},
+    "posted_limit": {"value": true, "quote": "posted limit: 60 km/h", "quote_status": "VERIFIED", "tier": "DOCUMENTED", "span": [25, 46], "rationale": ""},
+    "is_national_road": {"value": true, "quote": "Narciso Rd., Quezon City (national road)", "quote_status": "VERIFIED", "tier": "DOCUMENTED", "span": [47, 86], "rationale": ""},
+    "is_authorized_emergency_vehicle": {"value": true, "quote": "subject stated he was an on-duty volunteer responder", "quote_status": "VERIFIED", "tier": "ASSERTED", "span": [87, 138], "rationale": "self-serving claim"},
+    "is_emergency_response": {"value": null, "quote": "", "quote_status": "UNVERIFIED", "tier": "ASSERTED", "span": null, "rationale": "purged: dispatcher confirms no emergency call"}
+  },
+  "numbers": {"recorded_speed": 90.0, "posted_limit": 60.0},
+  "events": [
+    {"barrier": "IB-2", "detail": "quote purged: is_emergency_response"},
+    {"barrier": "TIER_FLOOR", "detail": "is_authorized_emergency_vehicle tier ASSERTED < required DOCUMENTED"}
+  ]
+}
