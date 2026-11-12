@@ -22,8 +22,10 @@ import json
 import sys
 from pathlib import Path
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(APP_ROOT / "lib"))
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
 
 from argumentation import (Argument, ArgumentGraph, AttackKind,  # noqa: E402
                            Role)
@@ -107,8 +109,8 @@ def main() -> int:
     ap.add_argument("--standard", default="beyond_reasonable_doubt",
                     choices=["preponderance", "clear_and_convincing",
                              "beyond_reasonable_doubt"])
-    ap.add_argument("--out", type=Path, default=APP_ROOT / "data" / "case_result.json")
-    ap.add_argument("--ledger", type=Path, default=APP_ROOT / "data" / "audit.jsonl")
+    ap.add_argument("--out", type=Path, default=Path("data/case_result.json"))
+    ap.add_argument("--ledger", type=Path, default=Path("data/audit.jsonl"))
     args = ap.parse_args()
 
     trace = json.loads(args.trace.read_text(encoding="utf-8"))

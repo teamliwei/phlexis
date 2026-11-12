@@ -4,7 +4,7 @@ from harness_core import EvidentiaryTier, FactContext, FactRecord, QuoteStatus
 from rulepack import fact_value, load_pack
 from pathlib import Path
 
-PACK_DIR = Path(__file__).resolve().parent.parent / "packs" / "ra4136"
+PACK_DIR = Path("packs/ra4136")  # direct path; run pytest from the app folder
 
 
 def _ctx(facts: dict, numbers: dict | None = None) -> FactContext:

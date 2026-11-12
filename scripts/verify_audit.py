@@ -13,15 +13,17 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(APP_ROOT / "lib"))
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
 
 from audit import verify  # noqa: E402
 
 
 def main() -> int:
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else \
-        APP_ROOT / "data" / "audit.jsonl"
+        Path("data/audit.jsonl")
     ok, msg = verify(path)
     print(f"{'OK' if ok else 'TAMPERED'}: {path} - {msg}", flush=True)
     return 0 if ok else 1

@@ -21,8 +21,10 @@ import json
 import sys
 from pathlib import Path
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(APP_ROOT / "lib"))
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
 
 import kleene  # noqa: E402
 from rulepack import fact_prov, fact_tier, fact_value, load_pack  # noqa: E402
@@ -50,9 +52,9 @@ def load_facts(path: Path):
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--pack", type=Path, default=APP_ROOT / "packs" / "ra4136")
+    ap.add_argument("--pack", type=Path, default=Path("packs/ra4136"))
     ap.add_argument("--facts", type=Path, required=True)
-    ap.add_argument("--out", type=Path, default=APP_ROOT / "data" / "trace.json")
+    ap.add_argument("--out", type=Path, default=Path("data/trace.json"))
     ap.add_argument("--expect-pack-sha", default=None,
                     help="IB-4: refuse to evaluate if pack hash differs")
     args = ap.parse_args()

@@ -30,8 +30,10 @@ import re
 import sys
 from pathlib import Path
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(APP_ROOT / "lib"))
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
 
 from harness_core import (EvidentiaryTier, FactContext, FactRecord,  # noqa: E402
                           QuoteStatus, sha256_text)
@@ -151,12 +153,12 @@ def verify_fact(f: dict, dossier: str, dossier_norm) -> FactRecord:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dossier", type=Path, required=True)
-    ap.add_argument("--pack", type=Path, default=APP_ROOT / "packs" / "ra4136")
+    ap.add_argument("--pack", type=Path, default=Path("packs/ra4136"))
     ap.add_argument("--shortlist", type=Path, default=None)
     ap.add_argument("--base-url", default="http://127.0.0.1:8080/v1")
     ap.add_argument("--api-key", default="sk-local")
     ap.add_argument("--model", default="local")
-    ap.add_argument("--out", type=Path, default=APP_ROOT / "data" / "factcontext.json")
+    ap.add_argument("--out", type=Path, default=Path("data/factcontext.json"))
     ap.add_argument("--dossier-id", default="dossier")
     args = ap.parse_args()
 

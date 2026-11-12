@@ -26,8 +26,10 @@ import argparse
 import sys
 from pathlib import Path
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(APP_ROOT / "lib"))
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
 
 import z3  # noqa: E402
 from rulepack import _parse_expr, load_pack  # noqa: E402

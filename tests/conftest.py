@@ -1,5 +1,4 @@
-"""tests/conftest.py - make lib/ importable regardless of invocation directory."""
+"""tests/conftest.py - direct lib path (AGENTS.md Rule 10); run pytest from app/."""
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "lib"))
+sys.path.insert(0, "lib")

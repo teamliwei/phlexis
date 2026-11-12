@@ -24,13 +24,15 @@ import sys
 import time
 from pathlib import Path
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(APP_ROOT / "lib"))
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
 
 from harness_core import sha256_text  # noqa: E402
 
 DEFAULT_CORPUS = Path(r"F:\kraft\ph-law-library\data\11_sc_decisions")
-DEFAULT_DB = APP_ROOT / "data" / "corpus.db"
+DEFAULT_DB = Path("data/corpus.db")
 
 # MiniLM has a 256-token context (AGENTS.md Rule 7 mandates it): 512-token
 # passages (the bge-m3-era choice) lost their second half to embedding

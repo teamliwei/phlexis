@@ -15,37 +15,28 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/teamliwei/phlexis.git"
-DIR="${1:-$HOME/phlexis}"
 
-# --- locate/load .env (repo root after clone; script dir before) ---
-load_env() {
-  local f="$1"
-  [ -f "$f" ] || return 1
-  # shellcheck disable=SC1090
-  set -a; source "$f"; set +a
-  return 0
-}
-load_env "$DIR/.env" || load_env "$(dirname "$0")/.env" || {
-  echo "ERROR: .env with GITHUB_TOKEN not found (looked in $DIR and script dir)"; exit 1
-}
-[ -n "${GITHUB_TOKEN:-}" ] || { echo "ERROR: GITHUB_TOKEN empty in .env"; exit 1; }
+# --- .env: direct path, this folder, the file itself. No fallbacks. ---
+cd "$(dirname "$0")"
+ENV_FILE=".env"
+[ -f "$ENV_FILE" ] || { echo "ERROR: .env not found in $(pwd)"; exit 1; }
+GITHUB_TOKEN=$(grep -m1 '^GITHUB_TOKEN=' "$ENV_FILE" | cut -d= -f2- | tr -d '\r')
+[ -n "$GITHUB_TOKEN" ] || { echo "ERROR: GITHUB_TOKEN empty in $ENV_FILE"; exit 1; }
 
 AUTH="x-access-token:${GITHUB_TOKEN}"
 
-# --- clone or refresh the repo ---
-if [ -d "$DIR/.git" ]; then
-  git -C "$DIR" fetch origin
-  git -C "$DIR" reset --hard origin/main   # remote build machine: local edits not expected
-else
-  git clone "https://${AUTH}@${REPO_URL#https://}" "$DIR"
+# --- clone or refresh the repo (this folder IS the repo root) ---
+if [ ! -d .git ]; then
+  git clone "https://${AUTH}@${REPO_URL#https://}" .
 fi
-cd "$DIR"
+git fetch origin
+git reset --hard origin/main
 mkdir -p data
 
 # --- corpus.db must be present out-of-band (2.8 GB, not in git) ---
 if [ ! -f data/corpus.db ]; then
   echo "ERROR: data/corpus.db missing."
-  echo "Transfer it to this machine (SCP/cloud) into $DIR/data/ and rerun."
+  echo "Transfer it to this machine (SCP/cloud) into data/ (this folder) and rerun."
   exit 1
 fi
 

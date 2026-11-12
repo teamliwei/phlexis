@@ -34,9 +34,12 @@ from pathlib import Path
 
 import numpy as np
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_DB = APP_ROOT / "data" / "corpus.db"
-INDEX_DIR = APP_ROOT / "data" / "index"
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
+DEFAULT_DB = Path("data/corpus.db")
+INDEX_DIR = Path("data/index")
 
 MODEL_ID = "sentence-transformers/all-MiniLM-L6-v2"  # mandated (AGENTS.md Rule 7, 2026-11-10)
 EMBED_THREADS = 4                  # capped per AGENTS.md Rule 8 (no resource starvation)

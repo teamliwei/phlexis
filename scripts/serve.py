@@ -27,13 +27,15 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 
-APP_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(APP_ROOT / "lib"))
+# AGENTS.md Rule 10: direct paths only. Run from the app folder.
+if not Path("lib").is_dir():
+    sys.exit("ERROR: run this script from the app folder (lib/ not found here)")
+sys.path.insert(0, "lib")
 
 from audit import verify as verify_ledger  # noqa: E402
 
 app = FastAPI()
-SETTINGS = {"data": APP_ROOT / "data"}
+SETTINGS = {"data": Path("data")}
 
 LABEL_COLORS = {"IN": "#1a7f37", "OUT": "#b02a2a",
                 "UNDECIDED": "#b58a2a", "INSUFFICIENT_GROUNDING": "#6e7781"}
