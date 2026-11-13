@@ -1,12 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
-REM push_to_gh.bat - stage, commit, and push this project to GitHub.
-REM Reads GITHUB_TOKEN from .env (never echoed, never stored in .git/config).
-REM Usage: push_to_gh.bat ["optional commit message"]
+REM push_to_gh.bat - run from the app folder. All paths hardcoded literals.
 
-cd /d "%~dp0"
-
-REM --- repo bootstrap ---
 if not exist .git git init -b main
 git remote get-url origin >nul 2>&1
 if errorlevel 1 git remote add origin https://github.com/teamliwei/phlexis.git
